@@ -111,7 +111,7 @@ void printing(LinkList ptr_list){
 
     Node* temp = ptr_list->my_head;
 
-    while(temp->next != NULL){
+    while(temp != NULL){
 
         printf("%d ", temp->number);
         temp = temp->next;
