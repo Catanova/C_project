@@ -29,13 +29,15 @@ int main(){
 
 LinkList ptr_list = (LinkList) malloc(sizeof(LinkImp));
 
+
+printf("Skipping duplicate number.\n ");
 insertion(ptr_list, 1);
 insertion(ptr_list, 35);
 insertion(ptr_list, 80);
 insertion(ptr_list, 7);
 insertion(ptr_list, 80);
 insertion(ptr_list, 3);
-insertion(ptr_list, 199);
+insertion(ptr_list, 19);
 
 printing(ptr_list);
 }
@@ -50,6 +52,7 @@ Node* allocate_memory(int my_number){
     }
     pNew->number = my_number;
     pNew->next = NULL;
+    pNew->prev = NULL;
     return pNew;
 }
 Node* search_node(LinkList ptr_list, int my_number){
@@ -58,24 +61,31 @@ Node* search_node(LinkList ptr_list, int my_number){
     Node* my_node ;
     for(my_node = ptr_list->my_head; my_node != NULL; my_node = my_node->next){
 
-        return my_node;
+        if(my_number == my_node->number){
+            return my_node;
+        }
     }
     return NULL;
 }
 void insertion(LinkList ptr_list, int my_number){
 
-    Node* temp = ptr_list->my_head;
+    Node* temp = search_node(ptr_list, my_number);
 
-    if (temp == NULL){
+    if (temp!= NULL){
 
-        Node * pNew = allocate_memory(my_number);
-        ptr_list->my_head = pNew;
+        return;
     }
     else{
 
+        // inserting first node
+        if(ptr_list->my_head == NULL){
+        
+            Node *pNew = allocate_memory(my_number);
+            ptr_list->my_head = pNew;
+        }
         // there is only node in our list
         // inserting in front off one node
-        if (ptr_list->my_head->number >= my_number){
+        else if (ptr_list->my_head->number >= my_number){
 
             Node *pNew = allocate_memory(my_number);
             
@@ -96,8 +106,11 @@ void insertion(LinkList ptr_list, int my_number){
                     pNew->next->prev = pNew;
                     p->next = pNew;
                     pNew->prev = p;
+                    return;
                 }
-                p = p->next;
+                else{
+                    p = p->next;
+                }
             }
             // insert at the end 
 
