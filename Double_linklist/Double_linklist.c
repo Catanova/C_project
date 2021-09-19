@@ -24,6 +24,7 @@ Node* allocate_memory(int my_number);
 Node* search_node(LinkList ptr_list, int my_number);
 void insertion(LinkList ptr_list, int my_number);
 void printing(LinkList ptr_list);
+void delete(LinkList ptr_list, int my_number);
 
 int main(){
 
@@ -39,6 +40,10 @@ insertion(ptr_list, 80);
 insertion(ptr_list, 3);
 insertion(ptr_list, 19);
 
+printing(ptr_list);
+
+delete(ptr_list,19);
+delete(ptr_list,3);
 printing(ptr_list);
 }
 
@@ -120,6 +125,46 @@ void insertion(LinkList ptr_list, int my_number){
         }
     }
 }
+
+void delete(LinkList ptr_list, int my_number)
+{
+    Node* temp = search_node(ptr_list, my_number);
+    if (temp == NULL)
+    {
+        printf("Error: unable to delete %d, not find.\n", my_number);
+        return;
+    }
+    else if (ptr_list->my_head->number == my_number)
+    {
+        Node* p = ptr_list->my_head;
+        ptr_list->my_head = p->next;
+        ptr_list->my_head->prev = NULL;
+        free(p);
+    }
+    else
+    {
+        Node* p = ptr_list->my_head->next;
+        while (p->next != NULL)
+        {
+            if (p->number == my_number)
+            {
+                Node* q = p->prev;
+                q->next = p->next;
+                p->next->prev = q;
+                free(p);
+                return;
+            }
+            else
+            {
+                p = p->next;
+            }
+        }
+        Node* q = p->prev;
+        q->next = NULL;
+        free(p);
+    }
+}
+
 void printing(LinkList ptr_list){
 
     Node* temp = ptr_list->my_head;
